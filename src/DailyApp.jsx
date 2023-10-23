@@ -1,8 +1,10 @@
+import { AppRouter } from './router/AppRouter';
 
 export const DailyApp = () => {
     return (
         <>
-            <h1>Hola Mundo</h1>
+        {/* Sistema de rutas principal de la app */}
+            <AppRouter/>
         </>
     )
 }
