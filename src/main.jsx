@@ -4,6 +4,8 @@ import {BrowserRouter} from 'react-router-dom';
 import {DailyApp} from './DailyApp';
 import './styles.css';
 
+// LA PALABRA PROVIDER SIGNIFICA QUE SE PROPORCIONA CIERTA
+// INFORMACION
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
