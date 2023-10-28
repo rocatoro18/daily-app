@@ -11,8 +11,13 @@ export const checkingAuthentication = (email, password) => {
 // THUNK
 export const startGoogleSignIn = () => {
     return async(dispatch) => {
+
         dispatch(checkingCredentials());
+
         const result = await signInWithGoogle();
-        console.log({result});
+        if(!result.ok) return dispatch(logout(result));
+        //delete result.ok;
+        dispatch(login(result));
+
     }
 }
