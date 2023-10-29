@@ -44,9 +44,12 @@ export const registerUserWithEmailPassword = async({email, password, displayName
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             ok: false,
+            // AQUI SE COLOCAN LAS VALIDACIONES
+            // PARA CONOCER LOS CODIGOS DE ERROR DE
+            // FIREBASE
             errorMessage: error.message
         }
     }
