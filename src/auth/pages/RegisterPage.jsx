@@ -4,6 +4,8 @@ import { AuthLayout } from '../layout/AuthLayout';
 import { Google } from '@mui/icons-material';
 import { useForm } from '../../hooks';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 const formData = {
     email: '',
@@ -21,18 +23,22 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+    const dispatch = useDispatch();
+
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const {
         formState, displayName, email, password, onInputChange,
         isFormValid, displayNameValid, emailValid, passwordValid
     } = useForm(formData, formValidations);
-    console.log(displayNameValid);
+    //console.log(displayNameValid);
 
     const onSubmit = (event) => {
         event.preventDefault();
         setFormSubmitted(true);
-        console.log(formState);
+        if(!isFormValid) return;
+        //console.log(formState);
+        dispatch(startCreatingUserWithEmailPassword(formState));
     }
 
     return (
@@ -86,7 +92,7 @@ export const RegisterPage = () => {
 
                     <Grid container spacing={2} sx={{mb:2, mt:1}}>
                         <Grid item xs={12}>
-                            <Button disabled={!isFormValid} type="submit" variant='contained' fullWidth>
+                            <Button type="submit" variant='contained' fullWidth>
                                 Crear cuenta
                             </Button>
                         </Grid>
