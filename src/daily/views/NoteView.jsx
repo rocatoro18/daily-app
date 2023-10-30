@@ -5,7 +5,14 @@ import { ImageGallery } from '../components';
 export const NoteView = () => {
     return (
         // GRID PERMITE ORGANIZARNOS MEJOR EN LUGAR DE UN BOX
-        <Grid container direction='row' alignItems='center' justifyContent='space-between' sx={{mb:1}}>
+        <Grid 
+        container 
+        direction='row' 
+        alignItems='center' 
+        justifyContent='space-between' 
+        sx={{mb:1}}
+        className='animate__animated animate__fadeIn animate__faster'
+        >
             <Grid item>
                 <Typography fontSize={39} fontWeight='light'>18 de noviembre, 2023</Typography>
             </Grid>
