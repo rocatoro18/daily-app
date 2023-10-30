@@ -1,6 +1,7 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote } from './dailySlice';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from './dailySlice';
+import { loadNotes } from '../../helpers';
 
 // THUNK
 export const startNewNote = () => {
@@ -39,5 +40,22 @@ export const startNewNote = () => {
         // podemos mandar dispatch a cualquier parte 
         // de nuestro store
         dispatch(setActiveNote(newNote));
+    }
+}
+
+// THUNK
+export const startLoadingNotes = () => {
+    return async(dispatch, getState) => {
+        // getState funcion para obtener la informacion del estado
+        const {uid} = getState().auth;
+
+        if(!uid) throw new Error('El UID del usuario no existe');
+
+        const notes = await loadNotes(uid);
+
+        dispatch(setNotes(notes));
+
+        //console.log({uid});
+
     }
 }

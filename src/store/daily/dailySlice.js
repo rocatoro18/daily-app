@@ -29,7 +29,7 @@ export const dailySlice = createSlice({
             state.active = action.payload;
         },
         setNotes: (state, action) => {
-
+            state.notes = action.payload;
         },
         setSaving: (state) => {
 
