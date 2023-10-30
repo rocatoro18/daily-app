@@ -1,4 +1,4 @@
-import { registerUserWithEmailPassword, signInWithGoogle } from '../../firebase/provider';
+import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from '../../firebase/provider';
 import { login, logout, checkingCredentials } from './';
 
 // THUNK
@@ -29,6 +29,22 @@ export const startCreatingUserWithEmailPassword = ({email, password, displayName
         dispatch(checkingCredentials());
         
         const {ok, uid, photoURL, errorMessage} = await registerUserWithEmailPassword({email, password, displayName});
+
+        if(!ok) return dispatch(logout({errorMessage}));
+
+        dispatch(login({uid, displayName, email, photoURL}));
+
+    }
+}
+
+// THUNK
+export const startLoginWithEmailPassword = ({email, password}) => {
+    return async(dispatch) => {
+        dispatch(checkingCredentials());
+        
+        const {ok, errorMessage, uid, displayName, photoURL} = await loginWithEmailPassword({email,password});
+        //console.log(`resp thunk error: ${errorMessage}`);
+        //console.log(`resp thunk ok: ${uid} ${displayName} ${photoURL}`);
 
         if(!ok) return dispatch(logout({errorMessage}));
 
