@@ -1,13 +1,14 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
 import { DailyRoutes } from '../daily/routes/DailyRoutes';
-import { useSelector } from 'react-redux';
 import { CheckingAuth } from '../ui';
+import { useCheckAuth } from '../hooks';
 
 
 export const AppRouter = () => {
 
-    const {status} = useSelector(state => state.auth);
+    const status = useCheckAuth();
+    
 
     if(status === 'checking'){
         return <CheckingAuth/>
@@ -16,11 +17,19 @@ export const AppRouter = () => {
     return (
         <Routes>
 
+            {
+                (status === 'authenticated') 
+                ? <Route path="/*" element={<DailyRoutes/>}/> 
+                : <Route path="/auth/*" element={<AuthRoutes/>}/>
+            }
+
+            <Route path='/*' element={<Navigate to = '/auth/login'/>}/>
+
             {/* Login y Registro*/}
-            <Route path="/auth/*" element={<AuthRoutes/>}/>
+            {/*<Route path="/auth/*" element={<AuthRoutes/>}/>*/}
 
             {/* DailyApp */}
-            <Route path="/*" element={<DailyRoutes/>}/>
+            {/*<Route path="/*" element={<DailyRoutes/>}/>*/}
 
         </Routes>
     )
