@@ -2,13 +2,16 @@ import { IconButton, Typography } from '@mui/material';
 import { DailyLayout } from '../layout/DailyLayout';
 import { NoteView, NothingSelectedView } from '../views';
 import { AddOutlined } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { startNewNote } from '../../store/daily/thunks';
 
 
 export const DailyPage = () => {
 
     const dispatch = useDispatch();
+    const {isSaving, active} = useSelector(state => state.daily);
+
+    //console.log(isSaving);
 
     const onClickNewNote = () => {
         dispatch(startNewNote());
@@ -18,12 +21,17 @@ export const DailyPage = () => {
         <DailyLayout>
             {/*<Typography>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur sed blanditiis quo. Libero ratione totam ullam culpa ea quasi quod dolorem molestiae. Fugiat, id beatae veniam possimus laudantium nesciunt praesentium?</Typography>*/}
             {/* NothingSelected */}
-            <NothingSelectedView/>
+            {
+                // !! DE ESTA FORMA SE CONVIERTE EN BOOLEAN
+                (!!active) ? <NoteView/> : <NothingSelectedView/>
+            }
+            {/*<NothingSelectedView/>*/}
             {/* NoteView */}
             {/*<NoteView/>*/}
 
             <IconButton
                 onClick={onClickNewNote}
+                disabled={isSaving}
                 size='large'
                 sx={{
                     color:'white',
