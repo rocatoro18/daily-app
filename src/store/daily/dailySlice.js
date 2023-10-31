@@ -27,15 +27,31 @@ export const dailySlice = createSlice({
         },
         setActiveNote: (state, action) => {
             state.active = action.payload;
+            state.messageSaved = '';
         },
         setNotes: (state, action) => {
             state.notes = action.payload;
         },
         setSaving: (state) => {
-
+            state.isSaving = true;
+            // TODO: MENSAJE DE ERROR
+            state.messageSaved = '';
         },
-        updateNote: (state, action) => {
+        updateNote: (state, action) => { // payload: note
+            // ACTUALIZAR REFERENCIA LOCAL PARA NO LLEGAR A OTRO LUGAR
+            state.isSaving = false;
+            // ESTUDIAR MAS EL MAP
+            state.notes = state.notes.map(note => {
 
+                if(note.id === action.payload.id){
+                    // HACER ESTO PARA REGRESAR LA NOTA ACTUALIZADA
+                    return action.payload;
+                }
+
+                return note;
+            });
+            // TODO: MOSTRAR MENSAJE DE ACTUALIZACION
+            state.messageSaved = `${action.payload.title}, actualizada correctamente`;
         },
         deleteNoteById: (state, action) => {
 

@@ -1,6 +1,6 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from './dailySlice';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from './dailySlice';
 import { loadNotes } from '../../helpers';
 
 // THUNK
@@ -56,6 +56,31 @@ export const startLoadingNotes = () => {
         dispatch(setNotes(notes));
 
         //console.log({uid});
+
+    }
+}
+
+// THUNK
+export const startSaveNote = () => {
+    return async(dispatch, getState) => {
+        
+        dispatch(setSaving());
+
+        const {uid} = getState().auth;
+        const {active:note} = getState().daily;
+
+        // spread de la note
+        const noteToFireStore = {...note};
+        // delete forma para eliminar una propiedad de un objeto
+        // propia de javascript
+        delete noteToFireStore.id;
+
+        // REFERENCIA AL DOCUMENTO
+        const docRef = doc(FirebaseDB, `${uid}/daily/notes/${note.id}`);
+        // FORMA DE IMPACTAR EN LA BASE DE DATOS DE FIREBASE
+        await setDoc(docRef, noteToFireStore,{merge: true});
+        // MANDAR NOTA ACTUALIZADA CON ID
+        dispatch(updateNote(note));
 
     }
 }
