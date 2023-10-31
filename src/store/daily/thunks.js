@@ -1,7 +1,7 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from './dailySlice';
-import { loadNotes } from '../../helpers';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './dailySlice';
+import { fileUpload, loadNotes } from '../../helpers';
 
 // THUNK
 export const startNewNote = () => {
@@ -81,6 +81,31 @@ export const startSaveNote = () => {
         await setDoc(docRef, noteToFireStore,{merge: true});
         // MANDAR NOTA ACTUALIZADA CON ID
         dispatch(updateNote(note));
+
+    }
+}
+
+// THUNK
+export const startUploadingFiles = (files = []) => {
+    return async(dispatch) => {
+        // PONER APP EN ESTADO DE CARGA Y BLOQUEAR TODO
+        dispatch(setSaving());
+
+        //await fileUpload(files[0]);
+        // DISPARAR TODAS LA PETICIONES EN SECUENCIA (ARREGLO DE PROMESAS) 
+        const fileUploadPromises = [] ;
+
+        for(const file of files) {
+            // CREANDO ARREGLO DE PROMESAS
+            fileUploadPromises.push(fileUpload(file));
+        }
+
+        // ESTE ESPERA UN ARREGLO DE PROMESAS
+        const photosUrls = await Promise.all(fileUploadPromises);
+
+        //console.log(photosUrls);
+
+        dispatch(setPhotosToActiveNote(photosUrls));
 
     }
 }

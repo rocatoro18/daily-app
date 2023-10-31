@@ -1,4 +1,5 @@
 import { loginWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from '../../firebase/provider';
+import { clearNotesLogout } from '../daily/dailySlice';
 import { login, logout, checkingCredentials } from './';
 
 // THUNK
@@ -57,6 +58,7 @@ export const startLoginWithEmailPassword = ({email, password}) => {
 export const startLogout = () => {
     return async(dispatch) => {
         await logoutFirebase();
-        dispatch(logout({}));
+        dispatch(clearNotesLogout());
+        dispatch(logout());
     }
 }

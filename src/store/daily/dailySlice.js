@@ -53,6 +53,21 @@ export const dailySlice = createSlice({
             // TODO: MOSTRAR MENSAJE DE ACTUALIZACION
             state.messageSaved = `${action.payload.title}, actualizada correctamente`;
         },
+        setPhotosToActiveNote: (state, action) => {
+            // SPREAD DE FOTOS ANTERIORES Y CONCATENACION CON ARREGLO ANTERIOR
+            // PRESERVAMOS ANTERIORES Y HACEMOS APPEND DE NUEVAS
+            state.active.imageUrls = [...state.active.imageUrls, ...action.payload];
+            state.isSaving = false;
+
+        }
+        ,
+        clearNotesLogout: (state) => {
+            state.isSaving = false;
+            state.messageSaved = '';
+            state.notes = [];
+            state.active = null;
+        }
+        ,
         deleteNoteById: (state, action) => {
 
         },
@@ -61,4 +76,4 @@ export const dailySlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById , savingNewNote} = dailySlice.actions;
+export const { addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById , savingNewNote, setPhotosToActiveNote, clearNotesLogout} = dailySlice.actions;

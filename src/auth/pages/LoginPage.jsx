@@ -7,6 +7,7 @@ import { useForm } from '../../hooks/useForm';
 import { checkingAuthentication, startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 import { useMemo } from 'react';
 
+// PARA EVIAR ESO SE HACE ESE FORMULARIO DESDE AFUERA
 const formData = {
     email: '',
     password: ''
@@ -18,6 +19,9 @@ export const LoginPage = () => {
     const {status, errorMessage} = useSelector(state => state.auth);
     //console.log(`error login page: ${errorMessage}`);
     //console.log(status);
+    // SE PONE EL FORM DATA AFUERA PORQUE CADA VEZ QUE SE RENDERIZA TIENE QUE TOMAR EL MISMO OBJETO,
+    // SI ESE OBJETO ESTA ADENTRO SE CREA UN BUCLE POR QUE EN CADA RENDERIZACION
+    // SE TOMARIA COMO UN OBJETO DIFERENTE
     const {email, password, onInputChange, formState} = useForm(formData);
 
     const isAuthenticating = useMemo(()=> status === 'checking', [status]);
