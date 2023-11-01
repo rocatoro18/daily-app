@@ -1,6 +1,6 @@
-import { collection, doc, setDoc } from 'firebase/firestore/lite';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './dailySlice';
+import { addNewEmptyNote, deleteNoteById, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './dailySlice';
 import { fileUpload, loadNotes } from '../../helpers';
 
 // THUNK
@@ -106,6 +106,25 @@ export const startUploadingFiles = (files = []) => {
         //console.log(photosUrls);
 
         dispatch(setPhotosToActiveNote(photosUrls));
+
+    }
+}
+
+// THUNK
+export const startDeletingNote = () => {
+    return async(dispatch, getState) => {
+        const {uid} = getState().auth;
+        const {active:note} = getState().daily;
+
+        // CONSTRUIR REFERENCIA AL DOC DE FIREBASE
+        const docRef = doc(FirebaseDB, `${uid}/daily/notes/${note.id}`);
+        // ELIMINAR DOC
+        await deleteDoc(docRef);
+        
+        // ELIMINAR NOTA DE MI STORE LOCAL
+
+        dispatch(deleteNoteById(note.id));
+        
 
     }
 }

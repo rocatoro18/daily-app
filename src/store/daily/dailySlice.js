@@ -69,7 +69,18 @@ export const dailySlice = createSlice({
         }
         ,
         deleteNoteById: (state, action) => {
-
+            state.active = null;
+            // FILTRAR PARA REGRESAR LAS NOTAS DIFERENTES A LA QUE SE MANDO POR EL ACTION
+            // CON REDUX TOOLKIT
+            state.notes = state.notes.filter(note => note.id !== action.payload);
+            // SIN REDUX TOOLKIT
+            /*
+            return {
+                ...state,
+                active: null,
+                notes: state.notes.filter(note => note.id !== action.payload)
+            }
+            */
         },
     }
 });
