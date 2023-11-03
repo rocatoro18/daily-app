@@ -47,10 +47,10 @@ export const startLoginWithEmailPassword = ({email, password}) => {
         const {ok, errorMessage, uid, displayName, photoURL} = await loginWithEmailPassword({email,password});
         //console.log(`resp thunk error: ${errorMessage}`);
         //console.log(`resp thunk ok: ${uid} ${displayName} ${photoURL}`);
-
+        
         if(!ok) return dispatch(logout({errorMessage}));
 
-        dispatch(login({uid, displayName, email, photoURL}));
+        dispatch(login({uid, displayName, email, photoURL, ok}));
 
     }
 }

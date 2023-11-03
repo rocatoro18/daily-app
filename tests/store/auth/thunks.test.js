@@ -1,6 +1,7 @@
-import { signInWithGoogle } from '../../../src/firebase/provider';
+import { loginWithEmailPassword, logoutFirebase, signInWithGoogle } from '../../../src/firebase/provider';
 import { checkingCredentials, login, logout } from '../../../src/store/auth';
-import { checkingAuthentication, startGoogleSignIn } from '../../../src/store/auth/thunks';
+import { checkingAuthentication, startGoogleSignIn, startLoginWithEmailPassword, startLogout } from '../../../src/store/auth/thunks';
+import { clearNotesLogout } from '../../../src/store/daily/dailySlice';
 import { demoUser } from '../../fixtures/authFixtures';
 
 // HACER MOCK DE ESTA DEPENDENCIA
@@ -50,6 +51,29 @@ describe('Pruebas en AuthThunks',()=>{
 
         expect(dispatch).toHaveBeenCalledWith(checkingCredentials());
         expect(dispatch).toHaveBeenCalledWith(logout(loginData));
+
+    });
+
+    test('startLoginWithEmailPassword debe de llamar checkingCredentials y login - Exito', async()=>{
+        const loginData = {ok:true, ...demoUser};
+        const formData = {email:demoUser.email, password:'123456'};
+
+        await loginWithEmailPassword.mockResolvedValue(loginData);
+
+        await startLoginWithEmailPassword(formData)(dispatch);
+
+        expect(dispatch).toHaveBeenCalledWith(checkingCredentials());
+        expect(dispatch).toHaveBeenCalledWith(login(loginData));
+
+    });
+
+    test('startLogout debe de llamar logoutFirebase, clearNotes y logout', async()=>{
+        await startLogout()(dispatch);
+
+        expect(logoutFirebase).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith(clearNotesLogout());
+        expect(dispatch).toHaveBeenCalledWith(logout());
+
 
     });
 
