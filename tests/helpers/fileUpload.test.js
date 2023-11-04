@@ -37,7 +37,7 @@ describe('Pruebas en fileUpload',()=>{
         const cloudResponse = await cloudinary.api.delete_resources(['daily-app/'+imageId],{
             resource_type: 'image'
         });
-        console.log({cloudResponse});
+        //console.log({cloudResponse});
     });
 
     test('debe de retornar un null', async() => {

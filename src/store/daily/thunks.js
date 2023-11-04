@@ -14,7 +14,7 @@ export const startNewNote = () => {
         // quiero el uid y buscalo dentro del nodo de
         // authentication
         const {uid} = getState().auth;
-        console.log(uid);
+        //console.log(uid);
         // uid
 
         const newNote = {
